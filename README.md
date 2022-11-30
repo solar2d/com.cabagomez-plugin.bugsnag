@@ -1,21 +1,34 @@
-# Plugin template
+# com.cabagomez-plugin.bugsnag
 
-To make it work for Solar2D plugins directory add your plugin content into the plugins directory. Then in revision, which is minimum requirement to run the plugin. Repository name must me `com.publisher.name-plugin.name` as it would be in build settings `["plugin.name"] = { publisherId = "com.publisher.name"}`.
+1. Add the plugin to your project:   
+```
+["plugin.bugsnag"] = 
+    {
+        publisherId = "com.cabagomez",
+        supportedPlatforms = { ["android"] = true }
+    }
 
-For example, `mkdir -p plugins/2020.2600/<platform>a`.
+```      
+2. Init plugin.
+```
+local bugsnag = require( "plugin.bugsnag")
+bugsnag.init( <Listerner> ) -- Nothing gets returnd by listerner at this time, but please provide.
+```    
+3. Send breadcrumb (optional)    
+```
+bugsnag.leaveBreadcrumb( "<stringofbreadcrumb>" ) -- A scene name, an ad shown.
+```
+4. Create an exception (optional and please don't deploy with this implemented)    
+```
+bugsnag.crash()
+
+```
 
 
-Example platforms are:
-* `android-kindle` will use `android` if not found
-* `android` any android platform
-* `macos` only desktop build
-* `mac-sim` desktop build or simulator
-* `win32` only desktop build
-* `win32-sim` desktop build or simulator
-* `web` for html5 builds
-* `html5` same as `web`
-* `iphone` iOS device
-* `iphone-sim` iOS simulator
-* `tvos` AppleTV device
-* `tvos-sim` Apple TV simulator
-* `lua` used if no other applicable platform found
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
