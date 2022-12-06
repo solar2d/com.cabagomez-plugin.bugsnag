@@ -21,16 +21,16 @@ applicationChildElements =
             -- Other stuff you might already have.
         }
 ```      
-2. Init plugin.
+3. Init plugin.
 ```
 local bugsnag = require( "plugin.bugsnag")
 bugsnag.init( <Listerner> ) -- Nothing gets returnd by listerner at this time, but please provide.
 ```    
-3. Send breadcrumb (optional)    
+4. Send breadcrumb (optional)    
 ```
 bugsnag.leaveBreadcrumb( "<stringofbreadcrumb>" ) -- A scene name, an ad shown.
 ```
-4. Create an exception (optional and please don't deploy with this implemented)    
+5. Create an exception (optional and please don't deploy with this implemented)    
 ```
 bugsnag.crash()
 
