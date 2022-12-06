@@ -8,6 +8,18 @@
         supportedPlatforms = { ["android"] = true }
     }
 
+```    
+2. Add your bugsnag key to the build settings:
+```    
+applicationChildElements =
+        {
+            [[
+                <meta-data android:name="com.bugsnag.android.API_KEY"
+             android:value="<your api key>"/>
+            ]],
+
+            -- Other stuff you might already have.
+        }
 ```      
 2. Init plugin.
 ```
