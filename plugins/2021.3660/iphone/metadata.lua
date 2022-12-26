@@ -9,7 +9,7 @@ local metadata =
 			"z"
 		},
 		frameworks = { 
-			
+			'Bugsnag'
 		},
 		usesSwift = true
 	},
