@@ -1,15 +1,16 @@
 # com.cabagomez-plugin.bugsnag
+NOTE: The iOS version is currently in testing. I will remove this note once I have completed my testing.
 
 1. Add the plugin to your project:   
 ```
 ["plugin.bugsnag"] = 
     {
-        publisherId = "com.cabagomez",
-        supportedPlatforms = { ["android"] = true }
+        publisherId = "com.cabagomez"
     }
 
 ```    
 2. Add your bugsnag key to the build settings:
+For Android:
 ```    
 applicationChildElements =
         {
@@ -20,7 +21,17 @@ applicationChildElements =
 
             -- Other stuff you might already have.
         }
-```      
+```    
+For iOS and to your plist:
+```
+        plist =
+		{
+            bugsnag =
+            {
+                { apiKey = { "xxxxxxxxxxYourKeyxxxxxxxxxx" } }
+            },
+        }
+```   
 3. Init plugin.
 ```
 local bugsnag = require( "plugin.bugsnag")
