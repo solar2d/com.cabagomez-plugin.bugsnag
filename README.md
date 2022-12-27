@@ -1,5 +1,4 @@
 # com.cabagomez-plugin.bugsnag
-NOTE: The iOS version is currently in testing. I will remove this note once I have completed my testing.
 
 1. Add the plugin to your project:   
 ```
