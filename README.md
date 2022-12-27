@@ -26,9 +26,8 @@ For iOS and to your plist:
 ```
         plist =
 		{
-            bugsnag =
-            {
-                { apiKey = { "xxxxxxxxxxYourKeyxxxxxxxxxx" } }
+            bugsnag = {
+                apiKey = "xxxxxxxxYourAPIKeyxxxxxxxx"
             },
         }
 ```   
