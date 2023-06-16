@@ -32,8 +32,12 @@ For iOS and to your plist:
 ```   
 3. Init plugin.
 ```
-local bugsnag = require( "plugin.bugsnag")
-bugsnag.init( <Listerner> ) -- Nothing gets returnd by listerner at this time, but please provide.
+local bugsnag = require( "plugin.bugsnag")   
+bugsnag.init( <Listerner> ) -- Nothing gets returnd by listerner at this time, but please provide.   
+```   
+Optionally you can provide id, name and e-mail:
+```
+bugsnag.init (<Listerner>, {id = "<userId of user>",email = "<email of user>", name="playerName"  }) -- Please provide all three even if one or 2 or empty space.
 ```    
 4. Send breadcrumb (optional)    
 ```
