@@ -40,6 +40,8 @@ class PluginBugsnag
         static int crash( lua_State *L );
 	private:
 		CoronaLuaRef fListener;
+        static bool isDebug;
+        
 };
 
 // ----------------------------------------------------------------------------
@@ -49,6 +51,7 @@ const char PluginBugsnag::kName[] = "plugin.bugsnag";
 
 // This corresponds to the event name, e.g. [Lua] event.name
 const char PluginBugsnag::kEvent[] = "pluginbugsnagevent";
+bool PluginBugsnag::isDebug = NO;
 
 PluginBugsnag::PluginBugsnag()
 :	fListener( NULL )
@@ -122,8 +125,10 @@ PluginBugsnag::leaveBreadcrumb( lua_State *L )
     if ( lua_type( L, 1 ) == LUA_TSTRING )
     {
         const char *breadcrumb = lua_tostring( L, 1 );
+        if (isDebug == true) {
+            NSLog(@"**** Bugsnag Plugin will leave breadcrumb %s .", breadcrumb);
+        }
         
-        NSLog(@"**** Bugsnag Plugin will leave breadcrumb %s .", breadcrumb);
         [Bugsnag leaveBreadcrumbWithMessage:[NSString stringWithUTF8String:breadcrumb]];
     }
     
@@ -135,6 +140,7 @@ PluginBugsnag::crash( lua_State *L )
 {
     NSLog(@"**** Bugsnag Plugin will report error. ONLY CALL bugsnag.crash() DURING TESTING");
     [Bugsnag notifyError:[NSError errorWithDomain:@"errortest.com" code:408 userInfo:nil]];
+    
     return 0;
 }
 
@@ -143,10 +149,11 @@ int
 PluginBugsnag::init( lua_State *L )
 {
     int listenerIndex = 1;
-    int tableIndex = 2;
     const char* userId = NULL;
     const char* email = NULL;
     const char* name = NULL;
+    isDebug = NO;
+    
     
 
     if ( CoronaLuaIsListener( L, listenerIndex, kEvent ) )
@@ -157,9 +164,9 @@ PluginBugsnag::init( lua_State *L )
         library->Initialize( listener );
     }
     
-    if ( lua_type( L, 2 ) == LUA_TTABLE )
+    if ( lua_type( L, -1 ) == LUA_TTABLE )
     {
-        lua_getfield( L, 2, "id" );
+        lua_getfield( L, -1, "id" );
         if ( lua_type( L, -1 ) == LUA_TSTRING )
         {
             userId = lua_tostring( L, -1 );
@@ -167,7 +174,7 @@ PluginBugsnag::init( lua_State *L )
         
         lua_pop( L, 1 );
         
-        lua_getfield( L, 2, "email" );
+        lua_getfield( L, -1, "email" );
         if ( lua_type( L, -1 ) == LUA_TSTRING )
         {
             email = lua_tostring( L, -1 );
@@ -176,25 +183,42 @@ PluginBugsnag::init( lua_State *L )
         lua_pop( L, 1 );
         
         
-        lua_getfield( L, 2, "name" );
+        lua_getfield( L, -1, "name" );
         if ( lua_type( L, -1 ) == LUA_TSTRING )
         {
             name = lua_tostring( L, -1 );
         }
         
         lua_pop( L, 1 );
+        
+        lua_getfield( L, -1, "isDebug" );
+        if ( lua_type( L, -1 ) == LUA_TBOOLEAN )
+        {
+            isDebug = lua_toboolean(L, -1);
+        }
+        
+        lua_pop( L, 1 );
     }
     
-
-    NSLog(@"**** Bugsnag Plugin Will Start");
+    if (isDebug == YES) {
+        NSLog(@"**** Bugsnag Plugin Will Start");
+    }
     try {
         
         BugsnagConfiguration *config = [BugsnagConfiguration loadConfig];
         if (userId != NULL && email != NULL && name != NULL) {
             
+            if (isDebug == YES) {
+                NSLog(@"**** Bugsnag start with email: %s, userId: %s, and name: %s.", email, userId, name);
+            }
+            
             [config setUser:[NSString stringWithUTF8String:userId] withEmail:[NSString stringWithUTF8String:email] andName:[NSString stringWithUTF8String:name]];
             [Bugsnag startWithConfiguration:config];
         }else {
+            if (isDebug == YES) {
+                NSLog(@"**** Bugsnag start");
+            }
+            
             [Bugsnag start];
         }
         
