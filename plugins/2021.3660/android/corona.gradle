@@ -9,5 +9,5 @@ repositories {
 
 dependencies {
 	// This package is not an explicit dependency anymore for anything
-  implementation "com.bugsnag:bugsnag-android:5.+"
+  implementation "com.bugsnag:bugsnag-android:6.19.0"
 }
